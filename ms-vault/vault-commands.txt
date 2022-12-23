@@ -15,7 +15,7 @@ The unseal key and root token are displayed below in case you want to
 seal/unseal the Vault or re-authenticate.
 
 Unseal Key: SYk9wnXF/89nN5mHWMjwvUaBZqad64WvO9pvHtr09k0=
-Root Token: hvs.TWuG1DUdSAV1h9jX2VWxuvDE
+Root Token: hvs.vdHZEVpS17Jljm3GpIgPsCeC
 
 Development mode should NOT be used in production installations!
 

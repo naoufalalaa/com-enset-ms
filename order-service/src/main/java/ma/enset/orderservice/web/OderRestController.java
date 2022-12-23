@@ -7,9 +7,8 @@ import ma.enset.orderservice.repository.OrderRepository;
 import ma.enset.orderservice.repository.ProductItemRepository;
 import ma.enset.orderservice.services.CustomerRestClientService;
 import ma.enset.orderservice.services.InventoryRestClientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class OderRestController {
     }
 
     @GetMapping("/allOrders")
+    @PreAuthorize("hasAuthority('USER')")
     public Iterable<Order> getAllOrders(){
         List<Order> orders = (List<Order>) orderRepository.findAll();
         orders.forEach(order -> {
@@ -43,6 +43,7 @@ public class OderRestController {
     }
 
     @GetMapping("/fullOrder/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public Order getOrder(@PathVariable Long id){
         Order order=orderRepository.findById(id).get();
         Customer customer=customerRestClientService.customerById(order.getCustomerId());
@@ -52,5 +53,17 @@ public class OderRestController {
             pi.setProduct(product);
         });
         return order;
+    }
+
+    @PostMapping("/addOrder")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Order addOrder(Order order){
+        return orderRepository.save(order);
+    }
+
+    @DeleteMapping("/deleteOrder/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteOrder(@PathVariable Long id){
+        orderRepository.deleteById(id);
     }
 }
